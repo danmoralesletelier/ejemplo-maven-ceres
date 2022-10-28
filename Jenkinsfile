@@ -9,7 +9,6 @@ pipeline {
         stage("Paso 1: Saludar"){
             steps {
                 script {
-                sh "time"
                 sh "echo 'Hello, World Usach!'"
                 }
             }
