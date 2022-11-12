@@ -13,7 +13,7 @@ pipeline {
                 }
             }
         }
-    stage("Sonar: Análisis SonarQube"){
+        stage("Sonar: Análisis SonarQube"){
             steps {
                 sh "echo 'Calling sonar Service in another docker container!'"
                 // Run Maven on a Unix agent to execute Sonar.
