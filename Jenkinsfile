@@ -6,13 +6,7 @@ def jsonParse(def json) {
 pipeline {
     agent any
     stages {
-        stage("Paso 1: Saludo"){
-            steps {
-                script {
-                sh "echo 'Hello, World Usach!'"
-                }
-            }
-        }
+        
         stage("Sonar: Análisis SonarQube"){
             steps {
                 sh "echo 'Calling sonar Service in another docker container!'"
