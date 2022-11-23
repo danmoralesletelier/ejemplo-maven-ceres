@@ -9,12 +9,13 @@ pipeline {
         USUARIO = 'Daniel Morales'
     }
     stages {
-        stage("Paso 1: Compliar"){
+        stage("Paso 1: Compiliar"){
             steps {
                 script {
-                sh "echo 'Compile Code!'"
-                // Run Maven on a Unix agent.
-                sh "./mvnw clean compile -e"
+                    env.STAGE = 'Paso 1: Compilar'
+                    sh "echo 'Compile Code!'"
+                    // Run Maven on a Unix agent.
+                    sh "./mvnw clean compile -e"
                 }
             }
         }
@@ -23,8 +24,8 @@ pipeline {
                 script {
                 sh "echo 'Test Code!'"
                 // Run Maven on a Unix agent.
-                //sh "./mvnw clean test -e"
-                sh "ssh user@10.1" //Introducido para falla
+                sh "./mvnw clean test -e" //Descomentar para exito
+                //sh "ssh user@10.1"      //Descomentar para falla
                 }
             }
         }
@@ -61,7 +62,7 @@ pipeline {
 			slackSend color: 'good', message: "[${env.USUARIO}] [${JOB_NAME}] [${BUILD_TAG}] Ejecucion Exitosa", teamDomain: 'devopsusach20-lzc3526', tokenCredentialId: 'token-slack'
 		}
 		failure {
-			slackSend color: 'danger', message: "[${env.USUARIO}] [${env.JOB_NAME}] [${BUILD_TAG}] Ejecucion fallida en stage [${env.STAGE}]", teamDomain: 'devopsusach20-lzc3526', tokenCredentialId: 'token-slack'
+			slackSend color: 'danger', message: "[${env.USUARIO}] [${JOB_NAME}] [${BUILD_TAG}] Ejecucion fallida en stage [${STAGE}]", teamDomain: 'devopsusach20-lzc3526', tokenCredentialId: 'token-slack'
 		}
     }
 }
