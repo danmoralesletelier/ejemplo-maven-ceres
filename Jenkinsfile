@@ -5,9 +5,11 @@ def jsonParse(def json) {
 }
 pipeline {
     agent any
+    env.USUARIO='Daniel Morales'
     stages {
         stage("Paso 1: Compliar"){
             steps {
+                env.STAGE='Paso 1: compilar'
                 script {
                 sh "echo 'Compile Code!'"
                 // Run Maven on a Unix agent.
@@ -17,6 +19,7 @@ pipeline {
         }
         stage("Paso 2: Testear"){
             steps {
+                env.STAGE='Paso 2: Testear'
                 script {
                 sh "echo 'Test Code!'"
                 // Run Maven on a Unix agent.
@@ -26,6 +29,7 @@ pipeline {
         }
         stage("Paso 3: Build .Jar"){
             steps {
+                env.STAGE='Paso 3: Build .jar'
                 script {
                 sh "echo 'Build .Jar!'"
                 // Run Maven on a Unix agent.
@@ -39,8 +43,9 @@ pipeline {
                 }
             }
         }
-        stage('Test Sonar con Name-Discovery') {
+        stage('Paso 4: Test Sonar con Name-Discovery') {
             steps {
+                env.STAGE='Paso 4: Test Sonar'
                 withSonarQubeEnv('SonarQube') {
                     sh "echo 'Calling sonar Service in another docker container!'"
                     // Run Maven on a Unix agent to execute Sonar
@@ -54,14 +59,16 @@ pipeline {
             sh "echo 'fase always executed post'"
         }
         success {
-            sh "echo 'fase success'"
-        }
-
-        failure {
-            sh "echo 'fase failure'"
-        }
+			slackSend color: 'good', message: "[${env.USUARIO}] [${JOB_NAME}] [${BUILD_TAG}] Ejecucion Exitosa", teamDomain: 'devopsusach20-lzc3526', tokenCredentialId: 'token-slack'
+		}
+		failure {
+			slackSend color: 'danger', message: "[${env.USUARIO}] [${env.JOB_NAME}] [${BUILD_TAG}] Ejecucion fallida en stage [${env.STAGE}]", teamDomain: 'devopsusach20-lzc3526', tokenCredentialId: 'token-slack'
+		}
     }
 }
+
+
+
 
 
 
