@@ -11,7 +11,6 @@ pipeline {
     stages {
         stage("Paso 1: Compliar"){
             steps {
-                env.STAGE='Paso 1: compilar'
                 script {
                 sh "echo 'Compile Code!'"
                 // Run Maven on a Unix agent.
@@ -21,7 +20,6 @@ pipeline {
         }
         stage("Paso 2: Testear"){
             steps {
-                env.STAGE='Paso 2: Testear'
                 script {
                 sh "echo 'Test Code!'"
                 // Run Maven on a Unix agent.
@@ -31,7 +29,6 @@ pipeline {
         }
         stage("Paso 3: Build .Jar"){
             steps {
-                env.STAGE='Paso 3: Build .jar'
                 script {
                 sh "echo 'Build .Jar!'"
                 // Run Maven on a Unix agent.
@@ -47,7 +44,6 @@ pipeline {
         }
         stage('Paso 4: Test Sonar con Name-Discovery') {
             steps {
-                env.STAGE='Paso 4: Test Sonar'
                 withSonarQubeEnv('SonarQube') {
                     sh "echo 'Calling sonar Service in another docker container!'"
                     // Run Maven on a Unix agent to execute Sonar
