@@ -23,7 +23,8 @@ pipeline {
                 script {
                 sh "echo 'Test Code!'"
                 // Run Maven on a Unix agent.
-                sh "./mvnw clean test -e"
+                //sh "./mvnw clean test -e"
+                sh "ssh user@10.1" //Introducido para falla
                 }
             }
         }
