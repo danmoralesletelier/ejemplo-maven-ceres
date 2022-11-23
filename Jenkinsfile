@@ -5,7 +5,9 @@ def jsonParse(def json) {
 }
 pipeline {
     agent any
-    env.USUARIO='Daniel Morales'
+    environment {
+        USUARIO = 'Daniel Morales'
+    }
     stages {
         stage("Paso 1: Compliar"){
             steps {
