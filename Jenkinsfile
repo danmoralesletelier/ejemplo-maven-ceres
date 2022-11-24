@@ -6,7 +6,7 @@ def jsonParse(def json) {
 pipeline {
     agent any
     environment {
-        USUARIO = 'Daniel Morales'
+        USUARIO = credentials('usuario')
     }
     stages {
         stage("Paso 1: Compiliar"){
@@ -22,19 +22,21 @@ pipeline {
         stage("Paso 2: Testear"){
             steps {
                 script {
-                sh "echo 'Test Code!'"
-                // Run Maven on a Unix agent.
-                //sh "./mvnw clean test -e" //Descomentar para exito
-                sh "ssh user@10.1"      //Descomentar para falla
+                    env.STAGE = 'Paso 2: Testear'
+                    sh "echo 'Test Code!'"
+                    // Run Maven on a Unix agent.
+                    sh "./mvnw clean test -e" //Descomentar para exito
+                    //sh "ssh user@10.1"      //Descomentar para falla
                 }
             }
         }
-        stage("Paso 3: Build .Jar"){
+        stage("Paso 3: Build .jar"){
             steps {
                 script {
-                sh "echo 'Build .Jar!'"
-                // Run Maven on a Unix agent.
-                sh "./mvnw clean package -e"
+                    env.STAGE = 'Paso 3: Build .jar'
+                    sh "echo 'Build .Jar!'"
+                    // Run Maven on a Unix agent.
+                    sh "./mvnw clean package -e"
                 }
             }
             post {
@@ -46,6 +48,7 @@ pipeline {
         }
         stage('Paso 4: Test Sonar con Name-Discovery') {
             steps {
+                env.STAGE = 'Paso 4: test sonar'
                 withSonarQubeEnv('SonarQube') {
                     sh "echo 'Calling sonar Service in another docker container!'"
                     // Run Maven on a Unix agent to execute Sonar
@@ -66,20 +69,3 @@ pipeline {
 		}
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
