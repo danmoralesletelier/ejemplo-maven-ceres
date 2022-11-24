@@ -6,7 +6,7 @@ def jsonParse(def json) {
 pipeline {
     agent any
     environment {
-        USUARIO = credentials('usuario')
+        USUARIO = 'Daniel Morales'
     }
     stages {
         stage("Paso 1: Compiliar"){
@@ -49,6 +49,7 @@ pipeline {
         stage('Paso 4: Test Sonar con Name-Discovery') {
             steps {
                 script {
+                    env.STAGE = 'Paso 4: Test Sonar'
                     withSonarQubeEnv('SonarQube') {
                         sh "echo 'Calling sonar Service in another docker container!'"
                         // Run Maven on a Unix agent to execute Sonar
